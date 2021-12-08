@@ -2,16 +2,14 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet, TextInput, Picker } from 'react-native'
 import { windowHeight, windowWidth } from '../../Dimensions';
 import FoodInput from './FoodInput'
+import Plus from './Plus';
 
 
 
-const Details = () => {
+const Details = (props) => {
   const [amount, setAmount] = useState(0)
   const onChangeTextHandler = (input) => {
     setAmount(parseInt(input))
-    if (isNaN(amount)) {
-      setAmount(0)
-    }
     console.log(amount)
   }
   return (
@@ -24,20 +22,17 @@ const Details = () => {
         }}
         placeholderText="Amount(gm)"
         keyboardType='number-pad' />
-      <Text style={styles.text}>fgfdg</Text>
+      <Text style={styles.text}>{props.foodItem.name}</Text>
+      {(amount != 0 && !isNaN(amount)) && <View>
+        <Text style={styles.text}>calories: {props.foodItem.calories * amount / 100}</Text>
+        <Text style={styles.text}>protein: {props.foodItem.protein * amount / 100}</Text>
+        <Text style={styles.text}>fat: {props.foodItem.fat * amount / 100}</Text>
+        <Text style={styles.text}>carbs: {props.foodItem.carbs * amount / 100}</Text>
+        <View style={styles.container1}>
 
-      {/* <Picker
-        style={styles.picker}
-        selectedValue={amount}
-        onValueChange={(input) => {
-          onChangeTextHandler(input)
-        }}
-
-      >
-        <Picker.Item label={1} value={1} />
-        <Picker.Item label={2} value={2} />
-        <Picker.Item label={3} value={3} />
-      </Picker> */}
+          <Plus />
+        </View>
+      </View>}
     </View>
   )
 }
@@ -46,13 +41,22 @@ const styles = StyleSheet.create({
   container: {
     marginTop: windowHeight / 40,
     width: '100%',
-    minHeight: windowHeight / 4,
-    maxHeight: windowHeight / 4,
+    // minHeight: windowHeight / 3,
+    // maxHeight: windowHeight / 4,
     backgroundColor: 'green',
     borderColor: '#ccc',
     borderRadius: 3,
     borderWidth: 1,
     padding: 10,
+  },
+  container1: {
+    // backgroundColor: 'rgba(227, 221, 201, 1)',
+    // flex: 1,
+    // flexDirection: "row",
+    // justifyContent: 'center',
+    alignItems: 'center',
+    // marginTop: windowHeight / 9,
+    // marginBottom: windowHeight / 9,
   },
   text: {
 

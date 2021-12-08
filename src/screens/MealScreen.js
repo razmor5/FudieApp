@@ -8,8 +8,37 @@ import Details from '../components/Details';
 
 const MealScreen = (props) => {
   const [input, setInput] = useState("");
+  const [foodItem, setFoodItem] = useState({})
   const [display, setDisplay] = useState(false);
-  const data = ["fsdfsdds", "ggggg", "yyyyyyy", "yyyyyyy", "yyyyyyy"];
+  const data = [
+    {
+      code: 41,
+      sml: 11411119,
+      name: "יוגורט ביו 3% שומן, תנובה",
+      protein: 4.4,
+      fat: 3,
+      carbs: 4.6,
+      calories: 65
+    },
+    {
+      code: 43,
+      sml: 11411149,
+      name: "יוגורט, 1.5% שומן, שלי, ריוויון , תנובה",
+      protein: 3.6,
+      fat: 1.5,
+      carbs: 5,
+      calories: 48
+    },
+    {
+      code: 45,
+      sml: 11411219,
+      name: "יוגורט של פעם 3% שומן, השומרון",
+      protein: 4,
+      fat: 3,
+      carbs: 7,
+      calories: 71
+    }
+  ];
   const onChangeTextHandler = (input) => {
     setInput(input)
     if (input === "") {
@@ -18,10 +47,10 @@ const MealScreen = (props) => {
     else {
       setDisplay(true)
     }
-    console.log(display)
   }
   const onPickOptionTextHandler = (input) => {
-    setInput(input)
+    setInput(input.name)
+    setFoodItem(input)
     setDisplay(false)
 
   }
@@ -33,14 +62,15 @@ const MealScreen = (props) => {
         onChangeText={onChangeTextHandler}
         placeholderText="Search" />
       {display && <ScrollView style={styles.viewContainer}>
-        {data.map(item => <TouchableOpacity onPress={() => { onPickOptionTextHandler(item) }}>
-          <Text>
-            {item}
-          </Text>
-        </TouchableOpacity>)}
+        {data.filter((item) => item.name.includes(input))
+          .map(item => <TouchableOpacity onPress={() => { onPickOptionTextHandler(item) }}>
+            <Text>
+              {item.name}
+            </Text>
+          </TouchableOpacity>)}
 
       </ScrollView>}
-      <Details />
+      <Details foodItem={foodItem} />
 
     </View>
 
