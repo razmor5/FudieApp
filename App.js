@@ -8,7 +8,7 @@ import Register from './src/screens/Register'
 import ForgotPassword from "./src/screens/ForgotPassword";
 import BG from './assets/login_bg.jpg'
 import HomeStack from "./src/screens/HomeStack";
-import Calculator from './src/screens/Calculator';
+import CalculatorScreen from './src/screens/CalculatorScreen';
 import Settings from './src/screens/Settings';
 import LottieView from 'lottie-react-native';
 
@@ -91,7 +91,7 @@ const App = () => {
             ),
           }}
         />
-        <AppTab.Screen name="Calculator" component={MealScreen}
+        <AppTab.Screen name="Calculator" component={CalculatorScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="calculator" color={color} size={23} />

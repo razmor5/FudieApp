@@ -5,9 +5,9 @@ import Meal from './Meal'
 const Meals = (props) => {
   return (
     <View>
-      {props.meals.map((meal, index) =>
+      {props.meals.map(meal =>
       (
-        <Meal key={index} meal={meal}
+        <Meal key={meal.id} meal={meal}
           onToggle={props.onToggle}
           navigator={props.navigator}
         />

@@ -6,7 +6,10 @@ import { windowHeight, windowWidth } from '../../Dimensions';
 const Meal = (props) => {
 
   const onLongPressHandler = () => {
-    props.navigator.navigate("Meal")
+    props.navigator.navigate("Meal", {
+      meal: props.meal,
+      showPlus: true
+    })
   }
 
   return (

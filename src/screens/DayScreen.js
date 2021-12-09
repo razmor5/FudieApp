@@ -7,6 +7,7 @@ import BG from '../../assets/login_bg.jpg'
 import AddForm from '../components/AddForm';
 import firebase from 'firebase';
 import "firebase/firestore";
+import Loading from './Loading';
 
 
 
@@ -23,6 +24,7 @@ const DayScreen = (props) => {
 
   const [meals, setMeals] = useState([])
   const [fetch, setFetch] = useState(false)
+  const [load, setLoad] = useState(false)
 
   const fetchMeals = async () => {
     let fetchedMeals = []
@@ -48,6 +50,7 @@ const DayScreen = (props) => {
         return a.time.localeCompare(b.time);
       }))
       console.log(mealsFromServer)
+      setLoad(true)
     }
     getMeals()
   }, [fetch])
@@ -85,35 +88,38 @@ const DayScreen = (props) => {
   props.navigation.setOptions({ title: days[date.getDay()] })
 
   const scrollViewRef = useRef();
+  if (load) {
+    return (
+      <ImageBackground
+        source={BG}
+        resizeMode="cover"
+        style={styles.wrapper}
+        blurRadius={15}
+      // onLoad={() => alert("loaded!")}
+      >
 
+        <ScrollView
+          ref={scrollViewRef}
+          onContentSizeChange={() => plus && scrollViewRef.current.scrollToEnd({ animated: true })} showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}>
+
+          <View style={styles.container}>
+
+            <Meals meals={meals} onToggle={onToggle} navigator={navigator} />
+
+          </View>
+          <View style={styles.container1}>
+
+            {plus ? <AddForm newId={meals.length + 1} save={onSaveNewMeal} done={() => setPlus(!plus)} /> :
+              <Plus onPlus={() => setPlus(!plus)} />}
+          </View>
+
+        </ScrollView>
+      </ImageBackground>
+    )
+  }
   return (
-    <ImageBackground
-      source={BG}
-      resizeMode="cover"
-      style={styles.wrapper}
-      blurRadius={15}
-    // onLoad={() => alert("loaded!")}
-    >
-
-      <ScrollView
-        ref={scrollViewRef}
-        onContentSizeChange={() => plus && scrollViewRef.current.scrollToEnd({ animated: true })} showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}>
-
-        <View style={styles.container}>
-
-          <Meals meals={meals} onToggle={onToggle} navigator={navigator} />
-
-        </View>
-        <View style={styles.container1}>
-
-          {plus ? <AddForm newId={meals.length + 1} save={onSaveNewMeal} done={() => setPlus(!plus)} /> :
-            <Plus onPlus={() => setPlus(!plus)} />}
-          {/* <AddForm /> */}
-        </View>
-
-      </ScrollView>
-    </ImageBackground>
+    <Loading />
   )
 }
 

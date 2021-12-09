@@ -12,6 +12,9 @@ const Details = (props) => {
     setAmount(parseInt(input))
     console.log(amount)
   }
+  const onPlusPressHandler = () => {
+    props.onPlusHandler("hello")
+  }
   return (
     <View style={styles.container}>
       <FoodInput
@@ -23,14 +26,14 @@ const Details = (props) => {
         placeholderText="Amount(gm)"
         keyboardType='number-pad' />
       <Text style={styles.text}>{props.foodItem.name}</Text>
-      {(amount != 0 && !isNaN(amount)) && <View>
+      {(amount != 0 && !isNaN(amount) && props.showDetails) && <View>
         <Text style={styles.text}>calories: {props.foodItem.calories * amount / 100}</Text>
         <Text style={styles.text}>protein: {props.foodItem.protein * amount / 100}</Text>
         <Text style={styles.text}>fat: {props.foodItem.fat * amount / 100}</Text>
         <Text style={styles.text}>carbs: {props.foodItem.carbs * amount / 100}</Text>
         <View style={styles.container1}>
 
-          <Plus />
+          {props.showPlus && <Plus onPlus={onPlusPressHandler} />}
         </View>
       </View>}
     </View>
