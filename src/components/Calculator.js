@@ -1,10 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import { windowHeight, windowWidth } from '../../Dimensions';
 import FoodInput from './FoodInput';
 import Details from './Details';
+import Loading from '../screens/Loading';
 
 const Calculator = (props) => {
+
+  const [load, setLoad] = useState(false)
+  const [db, setDb] = useState([])
+  const fetchData = async () => {
+    const data = await require('../../relevantdb.json');
+    return data
+  }
+
+  useEffect(() => {
+    const getData = async () => {
+      const dataFromServer = await fetchData()
+      setDb(dataFromServer)
+      setLoad(true)
+    }
+    getData()
+  }, [])
+
+
+
+
+
+
+
   const [input, setInput] = useState("");
   const [foodItem, setFoodItem] = useState({})
   const [display, setDisplay] = useState(false);
@@ -49,6 +73,7 @@ const Calculator = (props) => {
     setInput(input)
     if (input === "") {
       setDisplay(false)
+      setShowDetails(false)
     }
     else {
       setDisplay(true)
@@ -60,6 +85,14 @@ const Calculator = (props) => {
     setDisplay(false)
     setShowDetails(true)
   }
+
+
+  if (!load) {
+    return (
+      <Loading />
+    )
+  }
+
   return (
     <View style={styles.container}>
       <FoodInput
@@ -68,7 +101,7 @@ const Calculator = (props) => {
         onChangeText={onChangeTextHandler}
         placeholderText="Search" />
       {display && <ScrollView style={styles.viewContainer}>
-        {data.filter((item) => item.name.includes(input))
+        {db.filter((item) => item.name.includes(input))
           .map(item => <TouchableOpacity key={item.code} onPress={() => { onPickOptionTextHandler(item) }}>
             <Text>
               {item.name}
@@ -85,7 +118,7 @@ const Calculator = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgba(227, 221, 201, 1)',
+    // backgroundColor: 'rgba(227, 221, 201, 1)',
     flex: 1,
     // flexDirection: "row",
     // justifyContent: 'center',
@@ -96,7 +129,7 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     // padding: 20,
 
-    marginTop: windowHeight / 8,
+    marginTop: windowHeight / 9,
     // marginBottom: windowHeight / 100,
 
   },

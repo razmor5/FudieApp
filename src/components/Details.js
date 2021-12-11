@@ -7,12 +7,14 @@ import Plus from './Plus';
 
 
 const Details = (props) => {
-  const [amount, setAmount] = useState(0)
+  console.log(props.showDetails)
+  const [amount, setAmount] = useState("")
   const onChangeTextHandler = (input) => {
-    setAmount(parseInt(input))
+    setAmount(input)
     console.log(amount)
   }
   const onPlusPressHandler = () => {
+    setAmount("")
     props.onPlusHandler("hello")
   }
   return (
@@ -27,10 +29,10 @@ const Details = (props) => {
         keyboardType='number-pad' />
       <Text style={styles.text}>{props.foodItem.name}</Text>
       {(amount != 0 && !isNaN(amount) && props.showDetails) && <View>
-        <Text style={styles.text}>calories: {props.foodItem.calories * amount / 100}</Text>
-        <Text style={styles.text}>protein: {props.foodItem.protein * amount / 100}</Text>
-        <Text style={styles.text}>fat: {props.foodItem.fat * amount / 100}</Text>
-        <Text style={styles.text}>carbs: {props.foodItem.carbs * amount / 100}</Text>
+        <Text style={styles.text}>calories: {Math.round(props.foodItem.calories * parseInt(amount) / 100)}</Text>
+        <Text style={styles.text}>protein: {Math.round(props.foodItem.protein * parseInt(amount) / 100)}</Text>
+        <Text style={styles.text}>fat: {Math.round(props.foodItem.fats * parseInt(amount) / 100)}</Text>
+        <Text style={styles.text}>carbs: {Math.round(props.foodItem.carbohydrates * parseInt(amount) / 100)}</Text>
         <View style={styles.container1}>
 
           {props.showPlus && <Plus onPlus={onPlusPressHandler} />}

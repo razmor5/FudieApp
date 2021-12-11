@@ -5,13 +5,13 @@ import { windowHeight, windowWidth } from '../../Dimensions';
 
 const Meal = (props) => {
 
+  console.log(windowWidth / 14)
   const onLongPressHandler = () => {
     props.navigator.navigate("Meal", {
       meal: props.meal,
       showPlus: true
     })
   }
-
   return (
 
     <TouchableOpacity
@@ -19,8 +19,8 @@ const Meal = (props) => {
       onLongPress={onLongPressHandler}
       onPress={() => props.onToggle(props.meal.id, props.meal.checked)}>
 
-
       <Text style={props.meal.checked ? styles.checkedItem : styles.item}>{props.meal.name}</Text>
+      {/* <Text style={props.meal.checked ? checkedItem : item}>{props.meal.name}</Text> */}
 
       {/* {<Text style={props.meal.checked ? styles.checkedItem2 : styles.item2}>remaining: 1587</Text>} */}
 
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     minHeight: windowHeight / 7,
   },
   checkedContainer: {
+    // flexGrow: 1,
     backgroundColor: 'rgba(250, 250, 250, 0.9)',
     flex: 1,
     // display: 'flex',
@@ -68,8 +69,14 @@ const styles = StyleSheet.create({
     minHeight: windowHeight / 7,
   },
   item: {
+    width: windowWidth / 1.7,
+    maxHeight: windowHeight / 7,
+    // backgroundColor: 'green',
     flex: 2,
-    fontSize: 30,
+    fontSize: 25,
+    marginRight: 10,
+    position: 'absolute',
+    left: 20,
     color: 'rgba(255, 255, 255, 0.9)',
   },
 
@@ -86,8 +93,13 @@ const styles = StyleSheet.create({
     color: 'rgba(50, 50, 50, 0.9)',
   },
   checkedItem: {
+    width: windowWidth / 1.7,
+    maxHeight: windowHeight / 7,
+    position: 'absolute',
+    left: 20,
     flex: 2,
-    fontSize: 30,
+    fontSize: 25,
+    marginRight: 10,
     color: 'rgba(50, 50, 50, 0.9)',
   },
   checkedItem2: {
@@ -95,10 +107,12 @@ const styles = StyleSheet.create({
     color: 'rgba(50, 50, 50, 0.9)',
   },
   sub: {
-    alignItems: 'flex-start',
+    position: 'absolute',
+    right: 20,
+    // alignItems: 'flex-start',
     // justifyContent: 'center',
     // flex: 0.5,
-    flexDirection: "column",
+    // flexDirection: "column",
 
   }
 
