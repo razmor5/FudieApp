@@ -5,11 +5,12 @@ import { windowHeight, windowWidth } from '../../Dimensions';
 
 const Meal = (props) => {
 
-  console.log(windowWidth / 14)
   const onLongPressHandler = () => {
     props.navigator.navigate("Meal", {
       meal: props.meal,
-      showPlus: true
+      showPlus: true,
+      day: props.day,
+      onFetch: props.onFetch
     })
   }
   return (
@@ -26,7 +27,7 @@ const Meal = (props) => {
 
       <View style={styles.sub}>
         <Text style={props.meal.checked ? styles.checkedTime : styles.time}>{props.meal.time}</Text>
-        <Text style={props.meal.checked ? styles.checkedItem2 : styles.item2}>cal: {props.meal.cal}</Text>
+        <Text style={props.meal.checked ? styles.checkedItem2 : styles.item2}>cal: {Math.round(props.meal.cal)}</Text>
       </View>
     </TouchableOpacity>
   )

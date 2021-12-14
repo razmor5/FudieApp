@@ -1,22 +1,45 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TextInput, Picker } from 'react-native'
 import { windowHeight, windowWidth } from '../../Dimensions';
 import FoodInput from './FoodInput'
 import Plus from './Plus';
+import firebase from 'firebase';
+import "firebase/firestore";
 
 
 
 const Details = (props) => {
   console.log(props.showDetails)
   const [amount, setAmount] = useState("")
+  // const [item, setAmount] = useState("")
   const onChangeTextHandler = (input) => {
     setAmount(input)
     console.log(amount)
   }
   const onPlusPressHandler = () => {
     setAmount("")
-    props.onPlusHandler("hello")
+    props.onPlusHandler({
+      item: props.foodItem,
+      amount: amount
+    })
   }
+
+
+  // const fetchItem = async (id) => {
+  //   const fetchedItem = firebase.firestore().collection("fudieDB").doc(id);
+  //   return fetchedItem
+  // }
+
+  // useEffect(() => {
+  //   const getData = async (id) => {
+  //     const itemFromServer = await fetchItem(id)
+  //     setItem(itemFromServer)
+  //     console.log("item")
+  //     // setLoad(true)
+  //   }
+  //   getData(props.foodItem.id)
+  // }, [])
+
   return (
     <View style={styles.container}>
       <FoodInput

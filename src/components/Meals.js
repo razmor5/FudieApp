@@ -8,6 +8,8 @@ const Meals = (props) => {
       {props.meals.map(meal =>
       (
         <Meal key={meal.id} meal={meal}
+          onFetch={props.onFetch}
+          day={props.day}
           onToggle={props.onToggle}
           navigator={props.navigator}
         />

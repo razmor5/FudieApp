@@ -25,6 +25,9 @@ const DayScreen = (props) => {
   const [meals, setMeals] = useState([])
   const [fetch, setFetch] = useState(false)
   const [load, setLoad] = useState(false)
+  const fetchRequest = () => {
+    setFetch(!fetch)
+  }
 
   const fetchMeals = async () => {
     let fetchedMeals = []
@@ -67,7 +70,7 @@ const DayScreen = (props) => {
       .catch((error) => {
         console.error("Error adding document: ", error);
       });
-    setFetch(!fetch)
+    fetchRequest()
     // setMeals(meals.map(meal => meal.id === id ? { ...meal, checked: !meal.checked } : meal))
     // console.log(id)
   }
@@ -82,7 +85,7 @@ const DayScreen = (props) => {
       });
     // setMeals([...meals, meal])
     // console.log(meals)
-    setFetch(!fetch)
+    fetchRequest()
   }
 
   props.navigation.setOptions({ title: days[date.getDay()] })
@@ -105,7 +108,7 @@ const DayScreen = (props) => {
 
           <View style={styles.container}>
 
-            <Meals meals={meals} onToggle={onToggle} navigator={navigator} />
+            <Meals onFetch={fetchRequest} day={days[date.getDay()]} meals={meals} onToggle={onToggle} navigator={navigator} />
 
           </View>
           <View style={styles.container1}>
