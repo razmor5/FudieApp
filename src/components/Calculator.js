@@ -4,14 +4,37 @@ import { windowHeight, windowWidth } from '../../Dimensions';
 import FoodInput from './FoodInput';
 import Details from './Details';
 import Loading from '../screens/Loading';
+import firebase from 'firebase';
+import "firebase/firestore";
+import Card from './Card';
 
 const Calculator = (props) => {
 
   const [load, setLoad] = useState(false)
+  const [fetchMeals, setFetchMeals] = useState(false)
   const [db, setDb] = useState([])
+  const [meals, setMeals] = useState([])
+  const fetchRequest = () => {
+    setFetchMeals(!fetchMeals)
+  }
   const fetchData = async () => {
     const data = await require('../../relevantdb.json');
     return data
+  }
+
+  const fetchMealsReq = async () => {
+    let fetchedMealItems = []
+    await firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).collection(props.day).doc(props.meal.id).collection("FoodItems").get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          // console.log("doc info", doc.data())
+          fetchedMealItems.push(doc.data())
+        });
+      })
+      .catch((err) => {
+        console.log(err.message)
+      })
+    return fetchedMealItems
   }
 
   useEffect(() => {
@@ -20,8 +43,16 @@ const Calculator = (props) => {
       setDb(dataFromServer)
       setLoad(true)
     }
+    const getMeals = async () => {
+      const mealsFromServer = await fetchMealsReq()
+      setMeals(mealsFromServer)
+      console.log(meals)
+      setLoad(true)
+    }
+    getMeals()
     getData()
   }, [])
+
 
 
 
@@ -40,44 +71,16 @@ const Calculator = (props) => {
     setShowDetails(false)
     props.onPlusHandler(input)
   }
-  const data = [
-    {
-      code: 41,
-      sml: 11411119,
-      name: "יוגורט ביו 3% שומן, תנובה",
-      protein: 4.4,
-      fat: 3,
-      carbs: 4.6,
-      calories: 65
-    },
-    {
-      code: 43,
-      sml: 11411149,
-      name: "יוגורט, 1.5% שומן, שלי, ריוויון , תנובה",
-      protein: 3.6,
-      fat: 1.5,
-      carbs: 5,
-      calories: 48
-    },
-    {
-      code: 45,
-      sml: 11411219,
-      name: "יוגורט של פעם 3% שומן, השומרון",
-      protein: 4,
-      fat: 3,
-      carbs: 7,
-      calories: 71
-    }
-  ];
+
   const onChangeTextHandler = (input) => {
     setInput(input)
-    if (input === "") {
-      setDisplay(false)
-      setShowDetails(false)
-    }
-    else {
-      setDisplay(true)
-    }
+    // if (input === "") {
+    //   setDisplay(false)
+    //   setShowDetails(false)
+    // }
+    // else {
+    //   setDisplay(true)
+    // }
   }
   const onPickOptionTextHandler = (input) => {
     setInput(input.name)
@@ -85,6 +88,25 @@ const Calculator = (props) => {
     setDisplay(false)
     setShowDetails(true)
   }
+
+
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      console.log('checking...')
+      if (input === "") {
+        setDisplay(false)
+        setShowDetails(false)
+      }
+      else {
+        setDisplay(true)
+      }
+    }, 200)
+
+    return () => {
+      console.log('CLEANUP')
+      clearTimeout(identifier)
+    };
+  }, [input]);
 
 
   if (!load) {
@@ -110,6 +132,12 @@ const Calculator = (props) => {
 
       </ScrollView>}
       <Details onPlusHandler={onPlusPressHandler} showPlus={props.showPlus} showDetails={showDetails} foodItem={foodItem} />
+      <ScrollView style={styles.scrollitems}>
+
+        {meals.map(item =>
+          <Card item={item} key={item.id} />
+        )}
+      </ScrollView>
 
     </View>
 
@@ -147,6 +175,15 @@ const styles = StyleSheet.create({
     // flexDirection: 'row',
     // alignItems: 'center',
     backgroundColor: '#fff',
+  },
+  scrollitems: {
+    // flex: 1,
+    // backgroundColor: 'red',
+    // textAlign: 'center',
+    // margin: 10,
+    width: windowWidth - 50,
+
+
   }
 })
 

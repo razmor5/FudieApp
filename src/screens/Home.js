@@ -5,7 +5,6 @@ import { windowHeight, windowWidth } from '../../Dimensions';
 import BG from '../../assets/login_bg.jpg'
 
 
-
 const Home = (props) => {
   const day1 = new Date();
   const day2 = new Date(day1.getTime() + 1 * 24 * 60 * 60 * 1000);

@@ -10,7 +10,7 @@ import ChartPie from './ChartPie';
 
 
 
-const Details = (props) => {
+const FoodItemCard = (props) => {
   // console.log(props.showDetails)
   const [amount, setAmount] = useState("")
   // const [item, setAmount] = useState("")
@@ -44,14 +44,14 @@ const Details = (props) => {
 
   return (
     <View style={styles.container}>
-      <FoodInput
+      {/* <FoodInput
         iconType="check"
         labelValue={amount}
         onChangeText={(input) => {
           onChangeTextHandler(input)
         }}
         placeholderText="Amount(gm)"
-        keyboardType='number-pad' />
+        keyboardType='number-pad' /> */}
 
       <Text style={styles.title}>{props.foodItem.name}</Text>
       {(amount != 0 && !isNaN(amount) && props.showDetails) && <View>
@@ -150,4 +150,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default Details
+export default FoodItemCard
