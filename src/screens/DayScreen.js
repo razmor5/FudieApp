@@ -114,7 +114,7 @@ const DayScreen = (props) => {
           <View style={styles.container1}>
 
             {plus ? <AddForm newId={meals.length + 1} save={onSaveNewMeal} done={() => setPlus(!plus)} /> :
-              <Plus onPlus={() => setPlus(!plus)} />}
+              <Plus name='plus' onPlus={() => setPlus(!plus)} />}
           </View>
 
         </ScrollView>

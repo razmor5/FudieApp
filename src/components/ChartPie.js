@@ -56,7 +56,7 @@ const ChartPie = (props) => {
                   cx="50%"
                   cy="50%"
                   r={radius}
-                  stroke="#5b66ff"
+                  stroke="#3a47ff"
                   fill="transparent"
                   strokeWidth="20"
                   strokeDasharray={circleCircumference}
@@ -70,7 +70,7 @@ const ChartPie = (props) => {
                   cx="50%"
                   cy="50%"
                   r={radius}
-                  stroke="#5bff9d"
+                  stroke="#34ff86"
                   fill="transparent"
                   strokeWidth="20"
                   strokeDasharray={circleCircumference}
@@ -84,7 +84,7 @@ const ChartPie = (props) => {
                   cx="50%"
                   cy="50%"
                   r={radius}
-                  stroke="#ffd35b"
+                  stroke="#ffca39"
                   fill="transparent"
                   strokeWidth="20"
                   strokeDasharray={circleCircumference}
@@ -98,7 +98,7 @@ const ChartPie = (props) => {
                   cx="50%"
                   cy="50%"
                   r={radius}
-                  stroke="#ff5b5b"
+                  stroke="#ff1f1f"
                   fill="transparent"
                   strokeWidth="20"
                   strokeDasharray={circleCircumference}

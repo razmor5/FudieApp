@@ -10,6 +10,7 @@ const MealScreen = (props) => {
     db.get().then((doc) => {
       db.collection("FoodItems")
         .add({
+          amount: parseInt(input.amount),
           id: input.item.id,
           code: input.item.code,
           name: input.item.name,

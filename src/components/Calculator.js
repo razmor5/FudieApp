@@ -28,7 +28,7 @@ const Calculator = (props) => {
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           // console.log("doc info", doc.data())
-          fetchedMealItems.push(doc.data())
+          fetchedMealItems.push({ ...doc.data(), showValues: false })
         });
       })
       .catch((err) => {
@@ -41,20 +41,22 @@ const Calculator = (props) => {
     const getData = async () => {
       const dataFromServer = await fetchData()
       setDb(dataFromServer)
-      setLoad(true)
+      // setLoad(true)
     }
     const getMeals = async () => {
       const mealsFromServer = await fetchMealsReq()
       setMeals(mealsFromServer)
-      console.log(meals)
-      setLoad(true)
     }
     getMeals()
     getData()
+    setLoad(true)
   }, [])
 
 
-
+  const onPressValuesHandler = (id) => {
+    // setMealsValuesShow(mealsValuesShow.map((item) => item.id === id ? { ...item, showValues: true } : { ...item, showValues: false }))
+    setMeals(meals.map((item) => item.id === id ? { ...item, showValues: !item.showValues } : { ...item, showValues: false }))
+  }
 
 
 
@@ -74,6 +76,7 @@ const Calculator = (props) => {
 
   const onChangeTextHandler = (input) => {
     setInput(input)
+    setShowDetails(false)
     // if (input === "") {
     //   setDisplay(false)
     //   setShowDetails(false)
@@ -98,7 +101,10 @@ const Calculator = (props) => {
         setShowDetails(false)
       }
       else {
-        setDisplay(true)
+        if (!showDetails) {
+
+          setDisplay(true)
+        }
       }
     }, 200)
 
@@ -134,9 +140,8 @@ const Calculator = (props) => {
       <Details onPlusHandler={onPlusPressHandler} showPlus={props.showPlus} showDetails={showDetails} foodItem={foodItem} />
       <ScrollView style={styles.scrollitems}>
 
-        {meals.map(item =>
-          <Card item={item} key={item.id} />
-        )}
+        {meals.map(item => <Card delete={true} item={item} key={item.id} onPress={onPressValuesHandler} />)}
+
       </ScrollView>
 
     </View>

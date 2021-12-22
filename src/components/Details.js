@@ -6,6 +6,7 @@ import Plus from './Plus';
 import firebase from 'firebase';
 import "firebase/firestore";
 import ChartPie from './ChartPie';
+import Nutritional from './Nutritional';
 
 
 
@@ -19,11 +20,11 @@ const Details = (props) => {
     // console.log(amount)
   }
   const onPlusPressHandler = () => {
-    setAmount("")
     props.onPlusHandler({
       item: props.foodItem,
       amount: amount
     })
+    setAmount("")
   }
 
 
@@ -54,56 +55,11 @@ const Details = (props) => {
         keyboardType='number-pad' />
 
       <Text style={styles.title}>{props.foodItem.name}</Text>
-      {(amount != 0 && !isNaN(amount) && props.showDetails) && <View>
-        <View style={styles.wrapper}>
-          <View style={styles.left}>
+      {(amount != 0 && !isNaN(amount) && props.showDetails) &&
 
-            <Text style={styles.text}>calories: {Math.round(props.foodItem.calories * parseInt(amount) / 100)}</Text>
-            <Text style={{
-              fontSize: 16,
-              color: '#5b66ff',
-              borderBottomWidth: 1,
-              fontWeight: 'bold'
-            }}>
+        <Nutritional foodItem={props.foodItem} showPlus={props.showPlus} onPlus={onPlusPressHandler} amount={amount} />
+      }
 
-              protein: {Math.round(((props.foodItem.protein * parseInt(amount) / 100) + Number.EPSILON) * 100) / 100}</Text>
-            <Text style={{
-              fontSize: 16,
-              color: '#5bff9d',
-              borderBottomWidth: 1,
-              fontWeight: 'bold'
-            }}>
-              carbs: {Math.round(((props.foodItem.carbohydrates * parseInt(amount) / 100) + Number.EPSILON) * 100) / 100}</Text>
-            <Text style={{
-              fontSize: 16,
-              color: '#ffd35b',
-              borderBottomWidth: 1,
-              fontWeight: 'bold'
-            }}>
-              fat: {Math.round(((props.foodItem.fats * parseInt(amount) / 100) + Number.EPSILON) * 100) / 100}</Text>
-            <Text style={{
-              fontSize: 16,
-              color: '#ff5b5b',
-              borderBottomWidth: 1,
-              fontWeight: 'bold'
-            }}>
-              sugar: {Math.round(((props.foodItem.total_sugars * parseInt(amount) / 100) + Number.EPSILON) * 100) / 100}</Text>
-          </View>
-          <View style={styles.right}>
-            <ChartPie data={{
-              protein: props.foodItem.protein,
-              fat: props.foodItem.fats,
-              carbs: props.foodItem.carbohydrates,
-              sugar: props.foodItem.total_sugars,
-            }} />
-
-          </View>
-        </View>
-        <View style={styles.container1}>
-
-          {props.showPlus && <Plus onPlus={onPlusPressHandler} />}
-        </View>
-      </View>}
     </View>
   )
 }
