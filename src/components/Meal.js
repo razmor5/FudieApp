@@ -10,7 +10,8 @@ const Meal = (props) => {
       meal: props.meal,
       showPlus: true,
       day: props.day,
-      onFetch: props.onFetch
+      onFetch: props.onFetch,
+      onAdd: props.onAdd
     })
   }
   return (

@@ -12,6 +12,7 @@ const Meals = (props) => {
           day={props.day}
           onToggle={props.onToggle}
           navigator={props.navigator}
+          onAdd={props.onAdd}
         />
       )
       )}

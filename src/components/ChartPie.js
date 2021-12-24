@@ -113,6 +113,9 @@ const ChartPie = (props) => {
             }
           </G>
         </Svg>
+        <View style={styles.label}>
+          {props.children}
+        </View>
       </View>
     </View>
   );
@@ -130,5 +133,9 @@ const styles = StyleSheet.create({
   graphWrapper: {
     alignItems: "center",
     justifyContent: "center",
+  },
+  label: {
+    position: "absolute",
+    textAlign: "center",
   },
 });

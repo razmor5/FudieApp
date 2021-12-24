@@ -1,12 +1,14 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, } from 'react-native'
 import { windowHeight, windowWidth } from '../../Dimensions';
 import Nutritional from './Nutritional';
+
+
 
 const Card = (props) => {
 
   const onPressHandler = () => {
-    props.onPress(props.item.id)
+    props.onPress(props.item.key)
     console.log(props.item)
   }
 
@@ -16,9 +18,9 @@ const Card = (props) => {
       onPress={onPressHandler}
     >
 
-      <Text>{props.item.name}</Text>
+      <Text style={styles.text}>{props.item.name}</Text>
       {props.item.showValues &&
-        <Nutritional delete={props.delete} foodItem={props.item} showPlus={false} amount={props.item.amount} />
+        <Nutritional onDelete={props.onDelete} foodItem={props.item} showPlus={false} amount={props.item.amount} />
       }
     </TouchableOpacity>
   )
@@ -32,6 +34,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 10,
     color: 'rgba(255, 255, 255, 0.9)',
+  },
+  text: {
+    textAlign: 'right',
   }
 })
 

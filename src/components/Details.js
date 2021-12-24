@@ -56,8 +56,25 @@ const Details = (props) => {
 
       <Text style={styles.title}>{props.foodItem.name}</Text>
       {(amount != 0 && !isNaN(amount) && props.showDetails) &&
+        <Nutritional
+          foodItem={{
+            ...props.foodItem,
+            calcium: Math.round(((props.foodItem.calcium * parseInt(amount) / 100) + Number.EPSILON) * 100) / 100,
+            calories: Math.round(((props.foodItem.calories * parseInt(amount) / 100) + Number.EPSILON) * 100) / 100,
+            carbohydrates: Math.round(((props.foodItem.carbohydrates * parseInt(amount) / 100) + Number.EPSILON) * 100) / 100,
+            cholesterol: Math.round(((props.foodItem.cholesterol * parseInt(amount) / 100) + Number.EPSILON) * 100) / 100,
+            dietary_fiber: Math.round(((props.foodItem.dietary_fiber * parseInt(amount) / 100) + Number.EPSILON) * 100) / 100,
+            fats: Math.round(((props.foodItem.fats * parseInt(amount) / 100) + Number.EPSILON) * 100) / 100,
+            iron: Math.round(((props.foodItem.iron * parseInt(amount) / 100) + Number.EPSILON) * 100) / 100,
+            protein: Math.round(((props.foodItem.protein * parseInt(amount) / 100) + Number.EPSILON) * 100) / 100,
+            sodium: Math.round(((props.foodItem.sodium * parseInt(amount) / 100) + Number.EPSILON) * 100) / 100,
+            total_sugars: Math.round(((props.foodItem.total_sugars * parseInt(amount) / 100) + Number.EPSILON) * 100) / 100,
 
-        <Nutritional foodItem={props.foodItem} showPlus={props.showPlus} onPlus={onPlusPressHandler} amount={amount} />
+
+          }}
+          showPlus={props.showPlus} onPlus={onPlusPressHandler} amount={amount} />
+
+
       }
 
     </View>

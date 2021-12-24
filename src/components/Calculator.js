@@ -16,6 +16,7 @@ const Calculator = (props) => {
   const [meals, setMeals] = useState([])
   const fetchRequest = () => {
     setFetchMeals(!fetchMeals)
+    console.log("fetched")
   }
   const fetchData = async () => {
     const data = await require('../../relevantdb.json');
@@ -28,7 +29,7 @@ const Calculator = (props) => {
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           // console.log("doc info", doc.data())
-          fetchedMealItems.push({ ...doc.data(), showValues: false })
+          fetchedMealItems.push({ ...doc.data(), showValues: false, key: doc.id })
         });
       })
       .catch((err) => {
@@ -43,22 +44,29 @@ const Calculator = (props) => {
       setDb(dataFromServer)
       // setLoad(true)
     }
+    getData()
+    setLoad(true)
+  }, [])
+
+  useEffect(() => {
     const getMeals = async () => {
       const mealsFromServer = await fetchMealsReq()
       setMeals(mealsFromServer)
     }
     getMeals()
-    getData()
-    setLoad(true)
-  }, [])
+  }, [fetchMeals])
 
 
-  const onPressValuesHandler = (id) => {
+
+  const onPressValuesHandler = (key) => {
     // setMealsValuesShow(mealsValuesShow.map((item) => item.id === id ? { ...item, showValues: true } : { ...item, showValues: false }))
-    setMeals(meals.map((item) => item.id === id ? { ...item, showValues: !item.showValues } : { ...item, showValues: false }))
+    setMeals(meals.map((item) => item.key === key ? { ...item, showValues: !item.showValues } : { ...item, showValues: false }))
   }
 
-
+  const onPressDeleteHandler = (key, cal) => {
+    setMeals(meals.filter(item => item.key !== key))
+    props.onDelete(key, cal)
+  }
 
 
 
@@ -66,12 +74,13 @@ const Calculator = (props) => {
   const [foodItem, setFoodItem] = useState({})
   const [display, setDisplay] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
-  const onPlusPressHandler = (input) => {
+  const onPlusPressHandler = async (input) => {
     setInput("")
     setFoodItem({})
     setDisplay(false)
     setShowDetails(false)
-    props.onPlusHandler(input)
+    props.onPlusHandler(input, fetchRequest)
+    // fetchRequest()
   }
 
   const onChangeTextHandler = (input) => {
@@ -95,7 +104,7 @@ const Calculator = (props) => {
 
   useEffect(() => {
     const identifier = setTimeout(() => {
-      console.log('checking...')
+      // console.log('checking...')
       if (input === "") {
         setDisplay(false)
         setShowDetails(false)
@@ -106,10 +115,10 @@ const Calculator = (props) => {
           setDisplay(true)
         }
       }
-    }, 200)
+    }, 300)
 
     return () => {
-      console.log('CLEANUP')
+      // console.log('CLEANUP')
       clearTimeout(identifier)
     };
   }, [input]);
@@ -128,7 +137,7 @@ const Calculator = (props) => {
         labelValue={input}
         onChangeText={onChangeTextHandler}
         placeholderText="Search" />
-      {display && <ScrollView style={styles.viewContainer}>
+      {(display && input.length > 2) && <ScrollView style={styles.viewContainer}>
         {db.filter((item) => item.name.includes(input))
           .map(item => <TouchableOpacity key={item.code} onPress={() => { onPickOptionTextHandler(item) }}>
             <Text>
@@ -140,7 +149,7 @@ const Calculator = (props) => {
       <Details onPlusHandler={onPlusPressHandler} showPlus={props.showPlus} showDetails={showDetails} foodItem={foodItem} />
       <ScrollView style={styles.scrollitems}>
 
-        {meals.map(item => <Card delete={true} item={item} key={item.id} onPress={onPressValuesHandler} />)}
+        {meals.map(item => <Card item={item} key={item.key} onPress={onPressValuesHandler} onDelete={onPressDeleteHandler} />)}
 
       </ScrollView>
 

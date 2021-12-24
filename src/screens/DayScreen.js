@@ -70,9 +70,9 @@ const DayScreen = (props) => {
       .catch((error) => {
         console.error("Error adding document: ", error);
       });
-    fetchRequest()
-    // setMeals(meals.map(meal => meal.id === id ? { ...meal, checked: !meal.checked } : meal))
-    // console.log(id)
+    // fetchRequest()
+    setMeals(meals.map(meal => meal.id === id ? { ...meal, checked: !meal.checked } : meal))
+    console.log(id)
   }
   const onSaveNewMeal = (meal) => {
     firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).collection(days[date.getDay()])
@@ -86,6 +86,14 @@ const DayScreen = (props) => {
     // setMeals([...meals, meal])
     // console.log(meals)
     fetchRequest()
+  }
+
+
+  const onAddHandler = (id, cal) => {
+    console.log(cal)
+    meals.map((meal => meal.id === id ? console.log("before", meal.cal) : pass))
+    setMeals(meals.map(meal => meal.id === id ? { ...meal, cal: cal } : meal))
+    meals.map((meal => meal.id === id ? console.log("after", meal.cal) : pass))
   }
 
   props.navigation.setOptions({ title: days[date.getDay()] })
@@ -108,7 +116,7 @@ const DayScreen = (props) => {
 
           <View style={styles.container}>
 
-            <Meals onFetch={fetchRequest} day={days[date.getDay()]} meals={meals} onToggle={onToggle} navigator={navigator} />
+            <Meals onAdd={onAddHandler} onFetch={fetchRequest} day={days[date.getDay()]} meals={meals} onToggle={onToggle} navigator={navigator} />
 
           </View>
           <View style={styles.container1}>
