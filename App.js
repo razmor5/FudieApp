@@ -1,24 +1,20 @@
 import React, { useState, useEffect, Component } from 'react';
 import { View, Text, StyleSheet, ImageBackground, I18nManager } from "react-native";
-// import { createStackNavigator } from '@react-navigation/stack';
 
 import firebase from 'firebase';
 import Login from './src/screens/Login'
 import Register from './src/screens/Register'
 import ForgotPassword from "./src/screens/ForgotPassword";
-import BG from './assets/login_bg.jpg'
 import HomeStack from "./src/screens/HomeStack";
 import CalculatorScreen from './src/screens/CalculatorScreen';
 import Settings from './src/screens/Settings';
-import LottieView from 'lottie-react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import DayScreen from './src/screens/DayScreen';
 import Loading from './src/screens/Loading';
-import MealScreen from './src/screens/MealScreen';
+import SocialStack from './src/screens/SocialStack';
 
 
 // import firebase, { initializeApp } from 'firebase/app';
@@ -95,6 +91,13 @@ const App = () => {
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="calculator" color={color} size={23} />
+            ),
+          }}
+        />
+        <AppTab.Screen name="Social" component={SocialStack}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="account-switch-outline" color={color} size={23} />
             ),
           }}
         />
