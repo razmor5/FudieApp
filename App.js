@@ -7,7 +7,7 @@ import Register from './src/screens/Register'
 import ForgotPassword from "./src/screens/ForgotPassword";
 import HomeStack from "./src/screens/HomeStack";
 import CalculatorScreen from './src/screens/CalculatorScreen';
-import Settings from './src/screens/Settings';
+import Account from './src/screens/Account';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -101,7 +101,7 @@ const App = () => {
             ),
           }}
         />
-        <AppTab.Screen name="Settings" component={Settings}
+        <AppTab.Screen name="Account" component={Account}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="account-cog-outline" color={color} size={23} />

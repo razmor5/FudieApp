@@ -4,7 +4,7 @@ import Calculator from '../components/Calculator'
 
 const CalculatorScreen = () => {
   return (
-    <Calculator showPlus={false} />
+    <Calculator onlyCalc={true} showPlus={false} />
   )
 }
 

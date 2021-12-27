@@ -23,6 +23,31 @@ const Calculator = (props) => {
     return data
   }
 
+  // const fetchData = async () => {
+  //   let data = []
+  //   await firebase.firestore().collection("fudieDB").get()
+  //     .then((querySnapshot) => {
+  //       querySnapshot.forEach((doc) => {
+  //         data.push({
+  //           id: doc.id,
+  //           code: doc.data().code,
+  //           name: doc.data().name,
+  //           calories: doc.data().calories,
+  //           protein: doc.data().protein,
+  //           carbohydrates: doc.data().carbohydrates,
+  //           fats: doc.data().fats,
+  //           total_sugars: doc.data().total_sugars,
+  //           cholesterol: doc.data().cholesterol,
+  //           sodium: doc.data().sodium,
+  //           dietary_fiber: doc.data().dietary_fiber,
+  //           iron: doc.data().iron,
+  //           calcium: doc.data().calcium
+  //         })
+  //       })
+  //     })
+  //   return data
+  // }
+
   const fetchMealsReq = async () => {
     let fetchedMealItems = []
     await firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).collection(props.day).doc(props.meal.id).collection("FoodItems").get()
@@ -146,7 +171,7 @@ const Calculator = (props) => {
           </TouchableOpacity>)}
 
       </ScrollView>}
-      <Details onPlusHandler={onPlusPressHandler} showPlus={props.showPlus} showDetails={showDetails} foodItem={foodItem} />
+      <Details onlyCalc={props.onlyCalc} onPlusHandler={onPlusPressHandler} showPlus={props.showPlus} showDetails={showDetails} foodItem={foodItem} />
       <ScrollView style={styles.scrollitems}>
 
         {meals.map(item => <Card item={item} key={item.key} onPress={onPressValuesHandler} onDelete={onPressDeleteHandler} />)}

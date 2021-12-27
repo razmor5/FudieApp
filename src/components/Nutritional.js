@@ -90,7 +90,7 @@ const Nutritional = (props) => {
                 carbs: props.foodItem.carbohydrates,
                 sugar: props.foodItem.total_sugars,
               }} >
-                {!props.showPlus &&
+                {(!props.showPlus && !props.onlyCalc)&&
                   <View>
                     <Text style={{ fontSize: 16 }}>{props.foodItem.amount}</Text>
                     <Text style={{ fontSize: 16 }}>gm</Text>
@@ -128,7 +128,8 @@ const Nutritional = (props) => {
             }
           </View>
           :
-          <View style={{
+          !props.onlyCalc&&
+            <View style={{
             alignItems: 'center',
           }}>
             <Plus name="delete" onPlus={() => {
