@@ -5,6 +5,7 @@ import firebase from 'firebase';
 import "firebase/firestore";
 import Loading from './Loading';
 import PersonalInformation from '../components/PersonalInformation';
+import AccountForm from '../components/AccountForm';
 
 const Account = () => {
   const [load, setLoad] = useState(false)
@@ -26,6 +27,10 @@ const Account = () => {
     // return fetchedMeals
   }
 
+  const onEditPressHandler = (input)=>{
+    setPersonalInfo({...personalInfo, age:input.age, weight:input.weight, height:input.height})
+  }
+
   useEffect(()=>{
     fetchPersonalInfo()
   }, [])
@@ -38,6 +43,7 @@ const Account = () => {
   return(
     <View style={styles.container}>
       <PersonalInformation personalInfo = {personalInfo} />
+      <AccountForm onEditPress = {onEditPressHandler} />
       
     </View>
   )
@@ -47,8 +53,11 @@ const Account = () => {
 const styles = StyleSheet.create({
   container:{
     // marginTop:30,
-    backgroundColor:'green',
+    // backgroundColor:'green',
+    marginTop:windowHeight/15,
     height:windowHeight/1.1,
+    alignItems: 'center'
+
   },
   title:{
     fontSize: 24,
