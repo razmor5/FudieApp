@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import {windowHeight, windowWidth} from '../../Dimensions'
-
+ 
 
 const PersonalInformation = (props) => {
     console.log(props.personalInfo)
@@ -14,6 +14,7 @@ const PersonalInformation = (props) => {
                   <Text style = {styles.text}>age: {props.personalInfo.age}</Text>
             </View>
                 }
+               
             
             {props.personalInfo.weight&&
             <View style = {styles.wrapper}>
