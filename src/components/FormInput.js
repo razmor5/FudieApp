@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { windowHeight, windowWidth } from '../../Dimensions';
-
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const FormInput = ({ labelValue, placeholderText, iconType, ...rest }) => {
@@ -16,6 +15,7 @@ const FormInput = ({ labelValue, placeholderText, iconType, ...rest }) => {
         numberOfLines={1}
         placeholder={placeholderText}
         placeholderTextColor="#666"
+        returnKeyType='done'
         // require = {true}
         {...rest}
       />

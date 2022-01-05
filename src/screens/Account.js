@@ -6,9 +6,12 @@ import "firebase/firestore";
 import Loading from './Loading';
 import PersonalInformation from '../components/PersonalInformation';
 import AccountForm from '../components/AccountForm';
+import FormButton from '../components/FormButton';
+import PredictForm from '../components/PredictForm';
 
 const Account = () => {
   const [load, setLoad] = useState(false)
+  const [predict, setPredict] = useState(false)
   const [personalInfo, setPersonalInfo] = useState({})
 
   const fetchPersonalInfo = async ()=>{
@@ -27,8 +30,19 @@ const Account = () => {
     // return fetchedMeals
   }
 
-  const onEditPressHandler = (input)=>{
-    setPersonalInfo({...personalInfo, age:input.age, weight:input.weight, height:input.height})
+  const onEditPressHandler = async (input)=>{
+    await firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({
+        age:input.age,
+        weight:input.weight, 
+        height:input.height,
+        gender:input.gender
+      
+    }, { merge: true})
+    setPersonalInfo({...personalInfo, age:input.age, weight:input.weight, height:input.height, gender:input.gender})
+  }
+
+  const predictPressHandler=()=>{
+    setPredict((lastState)=>!lastState)
   }
 
   useEffect(()=>{
@@ -41,11 +55,23 @@ const Account = () => {
     )
   }
   return(
-    <View style={styles.container}>
-      <PersonalInformation personalInfo = {personalInfo} />
-      <AccountForm onEditPress = {onEditPressHandler} />
-      
-    </View>
+      <ScrollView style={styles.container}>
+        <View style={styles.wrapper}>
+
+          <PersonalInformation personalInfo = {personalInfo} />
+          <AccountForm onEditPress = {onEditPressHandler} />
+          {predict&&
+          <PredictForm/>
+        }
+          <View>
+            <FormButton
+            buttonTitle={`${predict?"CLOSE":"PREDICT"}`}
+            onPress={predictPressHandler}
+            />
+          </View>
+        </View>
+        
+      </ScrollView>
   )
   
 }
@@ -56,6 +82,10 @@ const styles = StyleSheet.create({
     // backgroundColor:'green',
     marginTop:windowHeight/15,
     height:windowHeight/1.1,
+    // justifyContent: 'center'
+    
+  },
+  wrapper:{
     alignItems: 'center'
 
   },

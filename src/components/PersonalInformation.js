@@ -30,6 +30,13 @@ const PersonalInformation = (props) => {
           <Text style={styles.text}>height: {props.personalInfo.height} cm</Text>
         </View>
       }
+
+      {props.personalInfo.gender &&
+        <View style={styles.wrapper}>
+
+          <Text style={styles.text}>gender: {props.personalInfo.gender}</Text>
+        </View>
+      }
     </View>
   )
 }

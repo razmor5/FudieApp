@@ -1,0 +1,92 @@
+import React, {useState} from 'react'
+import { View, Text } from 'react-native'
+import ActiveButton from './ActiveButton'
+import FormInput from './FormInput'
+
+
+
+const CaloriesBurnPicker = (props) => {
+    
+    const [other, setOther] = useState("")
+    const [otherShow, setOtherShow] = useState(false)
+    const [listOfOptions, setListOfOptions] = useState([
+        {
+            title:"Not Active At All - 700",
+            amount:700,
+            checked: false
+        },
+        {
+            title:"A Bit Active - 1200",
+            amount:1200,
+            checked: false
+        },
+        {
+            title:"Active - 1700",
+            amount:1700,
+            checked: false
+        },
+        {
+            title:"Very Active - 2200",
+            amount:2200,
+            checked: false
+        },
+        {
+            title:"Athlet - 2700",
+            amount:2700,
+            checked: false
+        },
+        {
+            title:"Other",
+            amount:-1,
+            checked: false
+        }
+    ])
+
+    const onPickHandler = (amount) => {
+        if (amount===-1){
+            if (otherShow){
+                if(other!==""&&other>0){
+                    props.onActivePress(other)
+                    // setOther("")
+                    setOtherShow(!otherShow);
+                }
+            }
+            else{
+                setOtherShow(!otherShow);
+            }
+        }
+        else
+        {
+            // setOther("")
+            setOtherShow(false);
+            props.onActivePress(amount)
+        }
+        setListOfOptions(lastState=>lastState.map(option=>option.amount===amount?{...option, checked:true}:{...option, checked:false}))
+    }
+
+    return (
+        <View>
+            {listOfOptions.map(option=> 
+                <ActiveButton
+                    buttonTitle={`${option.title} ${option.amount===-1? `${other&&"- "}` + other:""}`}
+                    onPress={()=>{onPickHandler(option.amount)}}
+                    checked = {option.checked}
+                />
+            )}
+            {otherShow&&
+                <View>
+
+                    <FormInput
+                        labelValue={other}
+                        onChangeText={(input) => setOther(parseInt(input))}
+                        placeholderText="Calories Burn"
+                        iconType="rocket1"
+                        keyboardType='number-pad'
+                        />
+                </View>
+            }
+        </View>
+    )
+}
+
+export default CaloriesBurnPicker

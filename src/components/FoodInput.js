@@ -13,6 +13,7 @@ const FoodInput = ({ labelValue, placeholderText, iconType, ...rest }) => {
         numberOfLines={1}
         placeholder={placeholderText}
         placeholderTextColor="#666"
+        returnKeyType='done'
         // require = {true}
         {...rest}
       />
