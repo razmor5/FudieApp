@@ -1,8 +1,21 @@
-import React from 'react'
-import { View, Text } from 'react-native'
+import React, { useState, useLayoutEffect } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Meal from './Meal'
 
 const Meals = (props) => {
+  // const [edit, setEdit] = useState(true)
+
+  // useLayoutEffect(() => {
+  //   props.navigator.setOptions({
+  //     headerRight: () => (
+  //       <TouchableOpacity onPress={() => { console.log("jhghj") }}>
+  //         <Text style={styles.text}>Edit</Text>
+  //       </TouchableOpacity>
+  //     ),
+  //   });
+  // }, [props.navigator]);
+
+
   return (
     <View>
       {props.meals.map(meal =>
@@ -13,6 +26,9 @@ const Meals = (props) => {
           onToggle={props.onToggle}
           navigator={props.navigator}
           onAdd={props.onAdd}
+          edit={props.edit}
+          forceEditPressDone={props.forceEditPressDone}
+          onDeleteMeal={props.onDeleteMeal}
         />
       )
       )}
@@ -20,5 +36,13 @@ const Meals = (props) => {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  text: {
+    color: '#6179ff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  }
+})
 
 export default Meals

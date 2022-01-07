@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, ScrollView, ImageBackground } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, ImageBackground, TouchableOpacity } from 'react-native'
 import { windowHeight, windowWidth } from '../../Dimensions';
+import { BG } from '../../BackGroundImage';
 import Meals from '../components/Meals';
 import Plus from '../components/Plus';
-import BG from '../../assets/login_bg.jpg'
 import AddForm from '../components/AddForm';
 import firebase from 'firebase';
 import "firebase/firestore";
@@ -23,6 +23,7 @@ const DayScreen = (props) => {
   //   });
 
   const [meals, setMeals] = useState([])
+  const [edit, setEdit] = useState(true)
   const [fetch, setFetch] = useState(false)
   const [load, setLoad] = useState(false)
   const fetchRequest = () => {
@@ -78,31 +79,51 @@ const DayScreen = (props) => {
     firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).collection(days[date.getDay()])
       .add(meal)
       .then((docRef) => {
-        console.log("Document written with ID: ", docRef.id);
+        setMeals((lastState) => [...lastState, { ...meal, id: docRef.id }].sort(function (a, b) {
+          return a.time.localeCompare(b.time);
+        }))
       })
       .catch((error) => {
         console.error("Error adding document: ", error);
       });
     // setMeals([...meals, meal])
     // console.log(meals)
-    fetchRequest()
+    // fetchRequest()
+  }
+
+  const onDeleteMealHandler = (id) => {
+    firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).collection(days[date.getDay()]).doc(id).delete()
+      .then(() => {
+        setMeals((lastState) => lastState.filter(meal => meal.id !== id))
+
+      }).catch((error) => {
+        console.error("Error removing document: ", error);
+      });
   }
 
 
   const onAddHandler = (id, cal) => {
-    // console.log("cal", cal)
-    // console.log("id", id)
-    // console.log("meals", meals)
-    // meals.map((meal => meal.id === id ? console.log("before", meal.cal) : console.log(meal.id)))
-    // setMeals(meals.map(meal => meal.id === id ? { ...meal, cal: cal } : meal))
-
     setMeals((lastState) => lastState.map(meal => meal.id === id ? { ...meal, cal: cal } : meal))
-
-    // meals.map((meal => meal.id === id ? console.log("after", meal.cal) : pass))
-    // console.log("meals", meals)
   }
 
-  props.navigation.setOptions({ title: days[date.getDay()] })
+  const onEditPressHandler = () => {
+    setEdit(lastState => !lastState)
+  }
+
+  const forceEditPressDone = () => {
+    setEdit(lastState => true)
+  }
+
+  props.navigation.setOptions({
+    title: days[date.getDay()],
+    headerRight: () => (
+      <TouchableOpacity onPress={onEditPressHandler}>
+        <Text style={styles.text}>{edit ? "Edit" : "Done"}</Text>
+      </TouchableOpacity>
+    ),
+  })
+
+
 
   const scrollViewRef = useRef();
   if (load) {
@@ -122,13 +143,14 @@ const DayScreen = (props) => {
 
           <View style={styles.container}>
 
-            <Meals onAdd={onAddHandler} onFetch={fetchRequest} day={days[date.getDay()]} meals={meals} onToggle={onToggle} navigator={navigator} />
+            <Meals onDeleteMeal={onDeleteMealHandler} forceEditPressDone={forceEditPressDone} edit={edit} onAdd={onAddHandler} onFetch={fetchRequest} day={days[date.getDay()]} meals={meals} onToggle={onToggle} navigator={navigator} />
 
           </View>
           <View style={styles.container1}>
-
-            {plus ? <AddForm newId={meals.length + 1} save={onSaveNewMeal} done={() => setPlus(!plus)} /> :
-              <Plus name='plus' onPlus={() => setPlus(!plus)} />}
+            {!edit && <View>
+              {plus ? <AddForm newId={meals.length + 1} save={onSaveNewMeal} done={() => setPlus(!plus)} /> :
+                <Plus name='plus' onPlus={() => setPlus(!plus)} />}
+            </View>}
           </View>
 
         </ScrollView>
@@ -142,27 +164,14 @@ const DayScreen = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: 'rgba(227, 221, 201, 1)',
     flex: 1,
-    // flexDirection: "row",
-    // justifyContent: 'center',
     alignItems: 'center',
-    // padding: 20,
-    // borderRadius: 10,
-    // borderColor: 'black',
-    // borderWidth: 1,
-    // padding: 20,
-
     marginTop: windowHeight / 9,
     marginBottom: windowHeight / 9,
   },
   container1: {
-    // backgroundColor: 'rgba(227, 221, 201, 1)',
     flex: 1,
-    // flexDirection: "row",
-    // justifyContent: 'center',
     alignItems: 'center',
-    // marginTop: windowHeight / 9,
     marginBottom: windowHeight / 9,
   },
   title: {
@@ -171,13 +180,16 @@ const styles = StyleSheet.create({
     fontSize: 42,
   },
   wrapper: {
-    // backgroundColor: 'rgba(227, 221, 201, 0.7)',
     flex: 1,
-    // justifyContent: 'center',
     alignItems: 'center',
-    // padding: 20,
     borderRadius: 10,
   },
+  text: {
+    color: '#097beb',
+    // fontWeight: 'bold',
+    fontSize: 20,
+  }
+
 })
 
 export default DayScreen

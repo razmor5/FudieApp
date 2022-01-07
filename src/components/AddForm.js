@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Keyboard } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { windowHeight, windowWidth } from '../../Dimensions';
 import FoodInput from './FoodInput';
@@ -12,6 +12,22 @@ const AddForm = (props) => {
 
   const [mealName, setMealName] = useState("")
   const [time, setTime] = useState("Choose Time")
+  const [keyboardVisable, setKeyboardVisable] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardVisable(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardVisable(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
   const acceptHandler = () => {
     // if (mealName === "") {
     //   setNameFilled(!nameFilled)
@@ -29,7 +45,19 @@ const AddForm = (props) => {
     props.done()
   }
   return (
-    <View style={styles.container}>
+    <View style={
+      {
+        backgroundColor: 'rgba(50, 50, 50, 0.9)',
+        padding: 20,
+        borderRadius: 10,
+        marginTop: 10,
+        color: 'rgba(255, 255, 255, 0.9)',
+        minWidth: windowWidth - 20,
+        maxWidth: windowWidth - 20,
+        minHeight: windowHeight / 7,
+        marginBottom: keyboardVisable ? windowHeight / 3 : 0,
+      }
+    }>
       <FoodInput
         labelValue={mealName}
         onChangeText={(input) => setMealName(input)}
@@ -59,28 +87,20 @@ const AddForm = (props) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'rgba(50, 50, 50, 0.9)',
-    // flex: 1,
-    // display: 'flex',
-    // flexDirection: "column",
-    // flexDirection: "row",
-    // justifyContent: 'center',
-    // alignItems: 'center',
     padding: 20,
     borderRadius: 10,
-    // borderColor: 'rgba(50, 50, 50, 0.7)',
-    // borderWidth: 1,
     marginTop: 10,
     color: 'rgba(255, 255, 255, 0.9)',
     minWidth: windowWidth - 20,
     maxWidth: windowWidth - 20,
     minHeight: windowHeight / 7,
+    marginBottom: windowHeight / 3,
   },
   container2: {
-    // backgroundColor: 'rgba(50, 50, 50, 0.9)',
     flex: 1,
     flexDirection: "row",
     justifyContent: 'space-evenly',
-    marginTop: windowHeight / 7,
+    // marginTop: windowHeight / 7,
 
   },
   item: {
@@ -94,12 +114,9 @@ const styles = StyleSheet.create({
   },
   plus: {
     flex: 3,
-    // borderWidth: 1,
-    // borderColor: 'black',
     borderRadius: 100,
     borderColor: 'rgba(255, 255, 255, 0.9)',
     borderWidth: 3,
-    // borderStyle: 'dotted',
     padding: 1,
     paddingLeft: 6,
     paddingTop: 6,
