@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { View, Text } from 'react-native'
 import ActiveButton from './ActiveButton'
 import FormInput from './FormInput'
@@ -6,74 +6,73 @@ import FormInput from './FormInput'
 
 
 const CaloriesBurnPicker = (props) => {
-    
+
     const [other, setOther] = useState("")
     const [otherShow, setOtherShow] = useState(false)
     const [listOfOptions, setListOfOptions] = useState([
         {
-            title:"Not Active At All - 700",
-            amount:700,
+            title: `Not Active At All - ${Math.round(props.BMR)}`,
+            amount: Math.round(props.BMR),
             checked: false
         },
         {
-            title:"A Bit Active - 1200",
-            amount:1200,
+            title: `A Bit Active - ${Math.round(1.375 * props.BMR)}`,
+            amount: Math.round(1.375 * props.BMR),
             checked: false
         },
         {
-            title:"Active - 1700",
-            amount:1700,
+            title: `Active - ${Math.round(1.55 * props.BMR)}`,
+            amount: Math.round(1.55 * props.BMR),
             checked: false
         },
         {
-            title:"Very Active - 2200",
-            amount:2200,
+            title: `Very Active - ${Math.round(1.725 * props.BMR)}`,
+            amount: Math.round(1.725 * props.BMR),
             checked: false
         },
         {
-            title:"Athlet - 2700",
-            amount:2700,
+            title: `Athlet - ${Math.round(1.9 * props.BMR)}`,
+            amount: Math.round(1.9 * props.BMR),
             checked: false
         },
         {
-            title:"Other",
-            amount:-1,
+            title: "Other",
+            amount: -1,
             checked: false
         }
     ])
 
     const onPickHandler = (amount) => {
-        if (amount===-1){
-            if (otherShow){
-                if(other!==""&&other>0){
+        if (amount === -1) {
+            if (otherShow) {
+                if (other !== "" && other > 0) {
                     props.onActivePress(other)
                     // setOther("")
                     setOtherShow(!otherShow);
                 }
             }
-            else{
+            else {
                 setOtherShow(!otherShow);
             }
         }
-        else
-        {
+        else {
             // setOther("")
             setOtherShow(false);
             props.onActivePress(amount)
         }
-        setListOfOptions(lastState=>lastState.map(option=>option.amount===amount?{...option, checked:true}:{...option, checked:false}))
+        setListOfOptions(lastState => lastState.map(option => option.amount === amount ? { ...option, checked: true } : { ...option, checked: false }))
     }
 
     return (
         <View>
-            {listOfOptions.map(option=> 
+            {listOfOptions.map(option =>
                 <ActiveButton
-                    buttonTitle={`${option.title} ${option.amount===-1? `${other&&"- "}` + other:""}`}
-                    onPress={()=>{onPickHandler(option.amount)}}
-                    checked = {option.checked}
+                    buttonTitle={`${option.title} ${option.amount === -1 ? `${other && "- "}` + other : ""}`}
+                    onPress={() => { onPickHandler(option.amount) }}
+                    checked={option.checked}
                 />
             )}
-            {otherShow&&
+            {otherShow &&
                 <View>
 
                     <FormInput
@@ -82,7 +81,7 @@ const CaloriesBurnPicker = (props) => {
                         placeholderText="Calories Burn"
                         iconType="rocket1"
                         keyboardType='number-pad'
-                        />
+                    />
                 </View>
             }
         </View>

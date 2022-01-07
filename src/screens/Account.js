@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, StyleSheet } from 'react-native'
-import {windowHeight, windowWidth} from '../../Dimensions'
+import { View, Text, ScrollView, StyleSheet, Alert } from 'react-native'
+import { windowHeight, windowWidth } from '../../Dimensions'
 import firebase from 'firebase';
 import "firebase/firestore";
 import Loading from './Loading';
@@ -14,90 +14,95 @@ const Account = () => {
   const [predict, setPredict] = useState(false)
   const [personalInfo, setPersonalInfo] = useState({})
 
-  const fetchPersonalInfo = async ()=>{
+  const fetchPersonalInfo = async () => {
     // let fetchedMeals = []
     await firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).get()
       .then((doc) => {
         setPersonalInfo(doc.data())
       })
-      .catch((error)=>{
+      .catch((error) => {
         // alert(error.message)
       })
       ;
-      
-      // setPersonalInfo({...personalInfo, age:26, weight:83, height:178})
-      setLoad(true)
+
+    // setPersonalInfo({...personalInfo, age:26, weight:83, height:178})
+    setLoad(true)
     // return fetchedMeals
   }
 
-  const onEditPressHandler = async (input)=>{
+  const onEditPressHandler = async (input) => {
     await firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({
-        age:input.age,
-        weight:input.weight, 
-        height:input.height,
-        gender:input.gender
-      
-    }, { merge: true})
-    setPersonalInfo({...personalInfo, age:input.age, weight:input.weight, height:input.height, gender:input.gender})
+      age: input.age,
+      weight: input.weight,
+      height: input.height,
+      gender: input.gender
+
+    }, { merge: true })
+    setPersonalInfo({ ...personalInfo, age: input.age, weight: input.weight, height: input.height, gender: input.gender })
   }
 
-  const predictPressHandler=()=>{
-    setPredict((lastState)=>!lastState)
+  const predictPressHandler = () => {
+    if (personalInfo.gender && personalInfo.age && personalInfo.weight && personalInfo.height) {
+      setPredict((lastState) => !lastState)
+    }
+    else {
+      Alert.alert("No Personal Information", "fill your personal information and try again")
+    }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchPersonalInfo()
   }, [])
 
-  if(!load){
-    return(
-      <Loading/>
+  if (!load) {
+    return (
+      <Loading />
     )
   }
-  return(
-      <ScrollView style={styles.container}>
-        <View style={styles.wrapper}>
+  return (
+    <ScrollView style={styles.container}>
+      <View style={styles.wrapper}>
 
-          <PersonalInformation personalInfo = {personalInfo} />
-          <AccountForm onEditPress = {onEditPressHandler} />
-          {predict&&
-          <PredictForm/>
+        <PersonalInformation personalInfo={personalInfo} />
+        {/* <AccountForm onEditPress={onEditPressHandler} /> */}
+        {predict &&
+          <PredictForm personalInfo={personalInfo} onDone={() => { setPredict(false) }} />
         }
-          <View>
-            <FormButton
-            buttonTitle={`${predict?"CLOSE":"PREDICT"}`}
+        <View>
+          <FormButton
+            buttonTitle={`${predict ? "CLOSE" : "PREDICT"}`}
             onPress={predictPressHandler}
-            />
-          </View>
+          />
         </View>
-        
-      </ScrollView>
+      </View>
+
+    </ScrollView>
   )
-  
+
 }
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     // marginTop:30,
     // backgroundColor:'green',
-    marginTop:windowHeight/15,
-    height:windowHeight/1.1,
+    marginTop: windowHeight / 15,
+    height: windowHeight / 1.1,
     // justifyContent: 'center'
-    
+
   },
-  wrapper:{
+  wrapper: {
     alignItems: 'center'
 
   },
-  title:{
+  title: {
     fontSize: 24,
-    textAlign:'center',
-    marginTop:windowHeight/7,
-  }, 
-  text:{
+    textAlign: 'center',
+    marginTop: windowHeight / 7,
+  },
+  text: {
     fontSize: 16,
-    textAlign:'center',
-    marginTop:windowHeight/70,
+    textAlign: 'center',
+    marginTop: windowHeight / 70,
   }
 })
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, Picker, StyleSheet } from 'react-native'
-import {windowHeight, windowWidth} from '../../Dimensions'
+import { windowHeight, windowWidth } from '../../Dimensions'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 
@@ -11,13 +11,13 @@ const FormPicker = (props) => {
                 <AntDesign name={props.iconType} size={20} color="#666" />
             </View>
             <Picker
-            selectedValue={props.selectedValue}
-            style={styles.dropdown}
-            onValueChange={(itemValue) => props.onValueChange(itemValue)}
+                selectedValue={props.selectedValue}
+                style={styles.dropdown}
+                onValueChange={(itemValue) => props.onValueChange(itemValue)}
             >
                 {props.data.map(item =>
-                        <Picker.Item label={item.label} value={item.value} />
-                    )}
+                    <Picker.Item label={item.label} value={item.value} />
+                )}
             </Picker>
         </View>
     )
@@ -25,7 +25,7 @@ const FormPicker = (props) => {
 
 const styles = StyleSheet.create({
 
-    dropdown:{
+    dropdown: {
         padding: 10,
         flex: 1,
         fontSize: 16,
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    wrapper:{
+    wrapper: {
         marginTop: 5,
         marginBottom: 10,
         width: '100%',
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         borderRightColor: '#ccc',
         borderRightWidth: 1,
         width: 50,
-      },
+    },
 })
 
 export default FormPicker

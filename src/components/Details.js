@@ -57,7 +57,7 @@ const Details = (props) => {
       <Text style={styles.title}>{props.foodItem.name}</Text>
       {(amount != 0 && !isNaN(amount) && props.showDetails) &&
         <Nutritional
-        onlyCalc={props.onlyCalc}
+          onlyCalc={props.onlyCalc}
           foodItem={{
             ...props.foodItem,
             calcium: Math.round(((props.foodItem.calcium * parseInt(amount) / 100) + Number.EPSILON) * 100) / 100,

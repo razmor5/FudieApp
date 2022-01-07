@@ -90,10 +90,16 @@ const DayScreen = (props) => {
 
 
   const onAddHandler = (id, cal) => {
-    console.log(cal)
-    meals.map((meal => meal.id === id ? console.log("before", meal.cal) : pass))
-    setMeals(meals.map(meal => meal.id === id ? { ...meal, cal: cal } : meal))
-    meals.map((meal => meal.id === id ? console.log("after", meal.cal) : pass))
+    // console.log("cal", cal)
+    // console.log("id", id)
+    // console.log("meals", meals)
+    // meals.map((meal => meal.id === id ? console.log("before", meal.cal) : console.log(meal.id)))
+    // setMeals(meals.map(meal => meal.id === id ? { ...meal, cal: cal } : meal))
+
+    setMeals((lastState) => lastState.map(meal => meal.id === id ? { ...meal, cal: cal } : meal))
+
+    // meals.map((meal => meal.id === id ? console.log("after", meal.cal) : pass))
+    // console.log("meals", meals)
   }
 
   props.navigation.setOptions({ title: days[date.getDay()] })
