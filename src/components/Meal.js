@@ -31,6 +31,13 @@ const Meal = (props) => {
     ])
   }
 
+  const onPressHandler = () => {
+    let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    if (days[new Date().getDay()] === props.day) {
+      props.onToggle(props.meal.id, props.meal.checked)
+    }
+  }
+
   return (
     <View
       style={styles.mainContainer}
@@ -60,7 +67,7 @@ const Meal = (props) => {
           }
         }
         onLongPress={onLongPressHandler}
-        onPress={() => props.onToggle(props.meal.id, props.meal.checked)}>
+        onPress={onPressHandler}>
 
         <Text style={props.meal.checked ? styles.checkedItem : styles.item}>{props.meal.name}</Text>
         {/* <Text style={props.meal.checked ? checkedItem : item}>{props.meal.name}</Text> */}

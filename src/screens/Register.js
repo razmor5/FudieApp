@@ -22,8 +22,26 @@ const Register = (props) => {
           .set({
             username,
             name
+          }).then((result) => {
+            let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            let today = new Date();
+            let initialObject = {
+              clear: true,
+              lastChecked: today
+            }
+            days.forEach(day => {
+              firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).collection(day)
+                .doc("MANAGE").set(initialObject)
+                .then((res) => {
+                  console.log(res)
+                })
+                .catch((err) => {
+                  console.log(err.message)
+                })
+            })
+
           })
-        console.log(result)
+        console.log("out", result)
       })
       .catch((error) => {
         alert(error)

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Keyboard } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Keyboard, Alert } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { windowHeight, windowWidth } from '../../Dimensions';
 import FoodInput from './FoodInput';
@@ -29,20 +29,22 @@ const AddForm = (props) => {
   }, []);
 
   const acceptHandler = () => {
-    // if (mealName === "") {
-    //   setNameFilled(!nameFilled)
-    // }
-    // console.log("animation")
-    const meal = {
-      name: mealName,
-      checked: false,
-      time: time,
-      cal: 0
+    if (mealName && time != "Choose Time") {
+
+      const meal = {
+        name: mealName,
+        checked: false,
+        time: time,
+        cal: 0
+      }
+      // console.log(meal)
+      // console.log(props.save)
+      props.save(meal)
+      props.done()
     }
-    // console.log(meal)
-    // console.log(props.save)
-    props.save(meal)
-    props.done()
+    else {
+      Alert.alert("Fill All The Fields", "Please make sure you filled all the fields and try again")
+    }
   }
   return (
     <View style={
@@ -66,6 +68,7 @@ const AddForm = (props) => {
       <TimeInput
         timer={time}
         onChange={(input) => setTime(input)}
+      // placeholderText="Meal Name"
       />
 
 

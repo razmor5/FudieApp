@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, StyleSheet, ScrollView, ImageBackground } from 'react-native'
 import Day from '../components/Day'
 import { windowHeight, windowWidth } from '../../Dimensions';
 import BG from '../../assets/login_bg.jpg'
+import firebase from 'firebase';
+import "firebase/firestore";
 
 
 const Home = (props) => {
@@ -13,10 +15,37 @@ const Home = (props) => {
   const day5 = new Date(day1.getTime() + 4 * 24 * 60 * 60 * 1000);
   const day6 = new Date(day1.getTime() + 5 * 24 * 60 * 60 * 1000);
   const day7 = new Date(day1.getTime() + 6 * 24 * 60 * 60 * 1000);
-  const navigateDay = (item) => {
-    // console.log(item)
-    props.navigation.navigate('Daily routine')
+
+  const removeCheckFromOtherDays = async () => {
+    let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    let todayDate = new Date()
+    let today = days[todayDate.getDay()]
+    let formalDate = todayDate.getDate().toString() + "/" + (todayDate.getMonth() + 1).toString() + "/" + todayDate.getFullYear().toString()
+    console.log(formalDate)
+    var db = firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid)
+    days.forEach(day => {
+      // console.log("here", day, today)
+      if (day === today) {
+
+      }
+      else {
+        db.collection(day)
+          .doc("MANAGE").get()
+          .then(doc => {
+            let fetchedDate = doc.data().lastChecked.toDate()
+            let fetchedFormalDate = fetchedDate.getDate().toString() + "/" + (fetchedDate.getMonth() + 1).toString() + "/" + fetchedDate.getFullYear().toString()
+            console.log(fetchedFormalDate)
+            // console.log("the clear for ", day, " is: ", doc.data().clear)
+            // console.log("the date for ", day, " is: ", doc.data().lastChecked.toDate())
+          })
+      }
+    })
   }
+
+  useEffect(() => {
+    removeCheckFromOtherDays()
+  }, [])
+
   return (
     <ImageBackground
       source={BG}
@@ -46,17 +75,8 @@ const Home = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: 'rgba(227, 221, 201, 1)',
     flex: 1,
-    // flexDirection: "row",
-    // justifyContent: 'center',
     alignItems: 'center',
-    // padding: 20,
-    // borderRadius: 10,
-    // borderColor: 'black',
-    // borderWidth: 1,
-    // padding: 20,
-
     marginTop: windowHeight / 9,
     marginBottom: windowHeight / 12,
   },
@@ -66,11 +86,8 @@ const styles = StyleSheet.create({
     fontSize: 42,
   },
   wrapper: {
-    // backgroundColor: 'rgba(227, 221, 201, 0.7)',
     flex: 1,
-    // justifyContent: 'center',
     alignItems: 'center',
-    // padding: 20,
     borderRadius: 10,
   },
 })

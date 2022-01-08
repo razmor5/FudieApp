@@ -35,13 +35,15 @@ const DayScreen = (props) => {
     await firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).collection(days[date.getDay()]).get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          fetchedMeals.push({
-            id: doc.id,
-            name: doc.data().name,
-            checked: doc.data().checked,
-            time: doc.data().time,
-            cal: doc.data().cal
-          })
+          if (doc.id != "MANAGE") {
+            fetchedMeals.push({
+              id: doc.id,
+              name: doc.data().name,
+              checked: doc.data().checked,
+              time: doc.data().time,
+              cal: doc.data().cal
+            })
+          }
         });
       });
     return fetchedMeals
@@ -148,7 +150,15 @@ const DayScreen = (props) => {
           </View>
           <View style={styles.container1}>
             {!edit && <View>
-              {plus ? <AddForm newId={meals.length + 1} save={onSaveNewMeal} done={() => setPlus(!plus)} /> :
+              {plus ?
+                <AddForm
+                  newId={meals.length + 1}
+                  save={onSaveNewMeal}
+                  done={() => {
+                    setPlus(lastState => !lastState)
+                    forceEditPressDone()
+                  }}
+                /> :
                 <Plus name='plus' onPlus={() => setPlus(!plus)} />}
             </View>}
           </View>
