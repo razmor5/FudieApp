@@ -29,9 +29,11 @@ const PredictForm = (props) => {
                     let calPerDay = 0
                     querySnapshot.forEach((doc) => {
                         if (doc.exists) {
-
-                            // alert("yes")
-                            calPerDay += doc.data().cal
+                            if (doc.id != 'MANAGE') {
+                                // console.log(doc.id, doc.data())
+                                // alert("yes")
+                                calPerDay += doc.data().cal
+                            }
 
                             // fetchedDays = []
                         }
@@ -102,6 +104,9 @@ const PredictForm = (props) => {
                 weight /= 7
                 if (destinationWeight === props.personalInfo.weight) {
                     Alert.alert("WIERD...", "You already achived your goal!")
+                }
+                else if ((Math.round(weight * 10) / 10) < 0) {
+                    Alert.alert("Oops...", "Looks like you need to edit your food diary or start working out more!")
                 }
                 else {
                     Alert.alert(`${Math.round(weight * 10) / 10}`, "weeks to your goal!")
