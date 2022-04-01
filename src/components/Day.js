@@ -47,6 +47,7 @@ const Day = (props) => {
         <Text style={styles.item}>{dayName[0]}</Text>
 
         <Text style={styles.item2}>{dayName[1]} {props.date.getUTCDate()} {props.date.getUTCFullYear()}</Text>
+        {/* <Text style={styles.item2}>{ }</Text> */}
       </Animated.View>
     </TouchableOpacity>
   )

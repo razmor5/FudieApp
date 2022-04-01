@@ -1,10 +1,14 @@
-import React from 'react'
-import { View, Text, StyleSheet, Button } from 'react-native'
+import React, { useEffect } from 'react'
+import { StatusBar, View, Text, StyleSheet, Button } from 'react-native'
 import LottieView from 'lottie-react-native';
 import { windowHeight, windowWidth } from '../../Dimensions';
 
 
 const Loading = () => {
+  useEffect(() => {
+    StatusBar.setHidden(true);
+  }, [])
+
   return (
     <View style={styles.container}>
       <LottieView

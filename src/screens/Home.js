@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, Text, StyleSheet, ScrollView, ImageBackground } from 'react-native'
+import { StatusBar, View, Text, StyleSheet, ScrollView, ImageBackground } from 'react-native'
 import Day from '../components/Day'
 import { windowHeight, windowWidth } from '../../Dimensions';
 import BG from '../../assets/login_bg.jpg'
@@ -44,6 +44,7 @@ const Home = (props) => {
 
   useEffect(() => {
     removeCheckFromOtherDays()
+    StatusBar.setHidden(true);
   }, [])
 
   return (
@@ -53,6 +54,7 @@ const Home = (props) => {
       style={styles.wrapper}
       blurRadius={15}
     >
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>

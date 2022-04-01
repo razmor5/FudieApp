@@ -39,6 +39,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
+    // position: 'absolute',
+    // zIndex: -1,
+
   },
   iconStyle: {
     padding: 10,

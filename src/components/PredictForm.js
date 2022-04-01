@@ -106,7 +106,7 @@ const PredictForm = (props) => {
                     Alert.alert("WIERD...", "You already achived your goal!")
                 }
                 else if ((Math.round(weight * 10) / 10) < 0) {
-                    Alert.alert("Oops...", "Looks like you need to edit your food diary or start working out more!")
+                    Alert.alert("Oops...", "Looks like you need to edit your food diary or start working out differently!")
                 }
                 else {
                     Alert.alert(`${Math.round(weight * 10) / 10}`, "weeks to your goal!")
@@ -132,7 +132,7 @@ const PredictForm = (props) => {
                 <View style={styles.wrapper}>
                     {/* {caloriesByWeek.map(item => <Text>{item.day} {item.cal}</Text>)} */}
 
-                    <Text style={styles.title}>Enter Your Destination weight, our prediction system will predict the number of weeks to your goal!</Text>
+                    <Text style={styles.title}>Enter Your Destination weight, FUDIE will predict the number of weeks to your goal!</Text>
                     <Text style={styles.text}>(according to your diet diary)</Text>
                     <FormInput
                         labelValue={destinationWeight}

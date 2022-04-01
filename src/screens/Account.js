@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, StyleSheet, Alert } from 'react-native'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
+import { View, Text, ScrollView, StyleSheet, Alert, TouchableOpacity } from 'react-native'
 import { windowHeight, windowWidth } from '../../Dimensions'
 import firebase from 'firebase';
 import "firebase/firestore";
@@ -9,10 +9,39 @@ import AccountForm from '../components/AccountForm';
 import FormButton from '../components/FormButton';
 import PredictForm from '../components/PredictForm';
 
-const Account = () => {
+const Account = ({ navigation }) => {
   const [load, setLoad] = useState(false)
   const [predict, setPredict] = useState(false)
   const [personalInfo, setPersonalInfo] = useState({})
+  const [leftTitle, setLeftTitle] = useState('Predict')
+  const [showEditForm, setShowEditForm] = useState(false)
+  const [rightTitle, setRightTitle] = useState('Edit')
+  const [showPredictForm, setShowPredictForm] = useState(false)
+
+
+  const onPressLeftHandler = () => {
+    setShowPredictForm(lastState => !lastState)
+    setLeftTitle(LastState => LastState === 'Predict' ? 'Cancel' : 'Predict')
+  }
+  const onPressRightHandler = () => {
+    setShowEditForm(lastState => !lastState)
+    setRightTitle(LastState => LastState === 'Edit' ? 'Cancel' : 'Edit')
+  }
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity onPress={onPressLeftHandler}>
+          <Text style={styles.header}>{leftTitle}</Text>
+        </TouchableOpacity>
+      ),
+      headerRight: () => (
+        <TouchableOpacity onPress={onPressRightHandler}>
+          <Text style={styles.header}>{rightTitle}</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation, leftTitle, rightTitle]);
 
   const fetchPersonalInfo = async () => {
     // let fetchedMeals = []
@@ -43,7 +72,7 @@ const Account = () => {
 
   const predictPressHandler = () => {
     if (personalInfo.gender && personalInfo.age && personalInfo.weight && personalInfo.height) {
-      setPredict((lastState) => !lastState)
+      setShowPredictForm((lastState) => !lastState)
     }
     else {
       Alert.alert("No Personal Information", "fill your personal information and try again")
@@ -63,16 +92,19 @@ const Account = () => {
     <ScrollView style={styles.container}>
       <View style={styles.wrapper}>
 
-        <PersonalInformation personalInfo={personalInfo} />
-        {/* <AccountForm onEditPress={onEditPressHandler} /> */}
-        {predict &&
-          <PredictForm personalInfo={personalInfo} onDone={() => { setPredict(false) }} />
+        {showEditForm ?
+          <AccountForm onPressHandler={onPressRightHandler} onEditPress={onEditPressHandler} /> :
+          <PersonalInformation personalInfo={personalInfo} />
+
+        }
+        {showPredictForm &&
+          <PredictForm personalInfo={personalInfo} onDone={() => { onPressLeftHandler() }} />
         }
         <View>
-          <FormButton
+          {/* <FormButton
             buttonTitle={`${predict ? "CLOSE" : "PREDICT"}`}
             onPress={predictPressHandler}
-          />
+          /> */}
         </View>
       </View>
 
@@ -83,15 +115,16 @@ const Account = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // marginTop:30,
     // backgroundColor:'green',
-    marginTop: windowHeight / 15,
+    // marginTop: 40,
+    marginTop: windowHeight / 10,
     height: windowHeight / 1.1,
+    // backgroundColor: 'green',
     // justifyContent: 'center'
 
   },
   wrapper: {
-    alignItems: 'center'
+    alignItems: 'center',
 
   },
   title: {
@@ -103,6 +136,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     marginTop: windowHeight / 70,
+  },
+  header: {
+    color: '#097beb',
+    // fontWeight: 'bold',
+    fontSize: 20,
   }
 })
 

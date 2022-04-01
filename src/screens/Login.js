@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { StatusBar, View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native'
 // import LoginScreen from "react-native-login-screen";
 import BG from '../../assets/login_bg.jpg'
 import FormButton from '../components/FormButton'
 import FormInput from '../components/FormInput'
 import firebase from 'firebase';
+import { windowHeight, windowWidth } from '../../Dimensions'
 
 
 // import firebase from 'firebase';
@@ -22,6 +23,11 @@ const Login = (props) => {
         alert(error)
       })
   }
+
+  useEffect(() => {
+    StatusBar.setHidden(true);
+  }, [])
+
   return (
     <ImageBackground source={BG} resizeMode="cover" style={styles.container}>
       <View style={styles.container}>
@@ -82,6 +88,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   logo: {
+    // marginTop: ,
     height: 150,
     width: 150,
     resizeMode: 'cover',
@@ -103,9 +110,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#5574a9',
     // fontFamily: 'Lato-Regular',
-  },
-  image: {
-
   },
 });
 

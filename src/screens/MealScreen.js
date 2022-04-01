@@ -31,6 +31,7 @@ const MealScreen = (props) => {
       }, { merge: true })
 
       total_calories += input.item.calories * (parseInt(input.amount) / 100)
+      props.route.params.onEditCaloriesToTotal(Math.round(input.item.calories * (parseInt(input.amount) / 100)))
       props.route.params.onAdd(props.route.params.meal.id, total_calories)
       // console.log(props.route.params.meal.id, input.item.calories * (parseInt(input.amount) / 100))
 
@@ -48,6 +49,7 @@ const MealScreen = (props) => {
         }, { merge: true })
       })
       total_calories -= cal
+      props.route.params.onEditCaloriesToTotal(Math.round(-cal))
 
       props.route.params.onAdd(props.route.params.meal.id, total_calories)
       // console.log(props.route.params.meal.id, -cal)

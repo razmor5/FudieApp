@@ -14,7 +14,8 @@ const Meal = (props) => {
       showPlus: true,
       day: props.day,
       onFetch: props.onFetch,
-      onAdd: props.onAdd
+      onAdd: props.onAdd,
+      onEditCaloriesToTotal: props.onEditCaloriesToTotal
     })
   }
 

@@ -1,23 +1,27 @@
 import React, { useState, useLayoutEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Meal from './Meal'
+import { windowHeight, windowWidth } from '../../Dimensions';
 
 const Meals = (props) => {
-  // const [edit, setEdit] = useState(true)
 
-  // useLayoutEffect(() => {
-  //   props.navigator.setOptions({
-  //     headerRight: () => (
-  //       <TouchableOpacity onPress={() => { console.log("jhghj") }}>
-  //         <Text style={styles.text}>Edit</Text>
-  //       </TouchableOpacity>
-  //     ),
-  //   });
-  // }, [props.navigator]);
+  const totalCaloriesSum = () => {
+    let finalAmount = 0
+    props.meals.map(({ cal }) => {
+      finalAmount += cal
+    })
+    // console.log(finalAmount)
+    return Math.round(finalAmount)
+  }
+  const [totalCalories, setTotalCalories] = useState(totalCaloriesSum())
 
+  const onEditCaloriesToTotal = (amount) => {
+    setTotalCalories(LastState => LastState + amount)
+  }
 
   return (
-    <View>
+    <View style={styles.container}>
+      <Text style={styles.text}>Total Calories: {totalCalories}</Text>
       {props.meals.map(meal =>
       (
         <Meal key={meal.id} meal={meal}
@@ -29,6 +33,7 @@ const Meals = (props) => {
           edit={props.edit}
           forceEditPressDone={props.forceEditPressDone}
           onDeleteMeal={props.onDeleteMeal}
+          onEditCaloriesToTotal={onEditCaloriesToTotal}
         />
       )
       )}
@@ -38,10 +43,14 @@ const Meals = (props) => {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    // textAlign: 'center',
+    alignItems: 'center'
+  },
   text: {
-    color: '#6179ff',
+    color: '#ffffff',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: windowWidth / 18,
   }
 })
 

@@ -11,10 +11,11 @@ const AccountForm = (props) => {
     const [age, setAge] = useState("")
     const [weight, setWeight] = useState("")
     const [height, setHeight] = useState("")
-    const [gender, setGender] = useState("Male")
+    const [gender, setGender] = useState("Gender")
+    const [backDropActive, setBackDropActive] = useState(false)
 
     const onEditPressHandler = () => {
-        if (validationInput(age) && validationInput(weight) && validationInput(height)) {
+        if (validationInput(age) && validationInput(weight) && validationInput(height) && gender !== "Gender") {
             props.onEditPress({
                 age: age,
                 weight: weight,
@@ -25,6 +26,7 @@ const AccountForm = (props) => {
             setAge("")
             setWeight("")
             setHeight("")
+            props.onPressHandler()
         }
         else {
             Alert.alert("Can not save the changes!", "Please fill all the fields")
@@ -37,32 +39,44 @@ const AccountForm = (props) => {
 
     return (
 
-        <View style={styles.container}>
-            {/* <Text>{gender}</Text> */}
-            <FormInput
-                labelValue={age}
-                onChangeText={input => setAge(parseInt(input))}
-                placeholderText="Age"
-                iconType="user"
-                keyboardType='number-pad'
-            />
-            <FormInput
-                labelValue={weight}
-                onChangeText={input => setWeight(parseInt(input))}
-                placeholderText="Weight"
-                iconType="dashboard"
-                keyboardType='number-pad'
-            />
-            <FormInput
-                labelValue={height}
-                onChangeText={input => setHeight(parseInt(input))}
-                placeholderText="Height"
-                iconType="totop"
-                keyboardType='number-pad'
-            />
+        <View style={{
+            ...styles.container,
+        }}>
+            {
+                !backDropActive &&
+                <FormInput
+                    labelValue={age}
+                    onChangeText={input => setAge(parseInt(input))}
+                    placeholderText="Age"
+                    iconType="user"
+                    keyboardType='number-pad'
+                />
+            }
+            {
+                !backDropActive &&
+                <FormInput
+                    labelValue={weight}
+                    onChangeText={input => setWeight(parseInt(input))}
+                    placeholderText="Weight"
+                    iconType="dashboard"
+                    keyboardType='number-pad'
+                />
+            }
+            {
+                !backDropActive &&
+                <FormInput
+                    labelValue={height}
+                    onChangeText={input => setHeight(parseInt(input))}
+                    placeholderText="Height"
+                    iconType="totop"
+                    keyboardType='number-pad'
+                />
+            }
+
             <FormPicker
                 iconType={`${gender === "Male" ? "man" : "woman"}`}
                 selectedValue={gender}
+                onPress={() => { setBackDropActive(LastState => !LastState) }}
                 onValueChange={(val) => { setGender(val) }}
                 data={[
                     {
@@ -74,10 +88,33 @@ const AccountForm = (props) => {
                         value: "Female"
                     }]}
             />
-            <FormButton
-                buttonTitle="Save"
-                onPress={onEditPressHandler}
-            />
+            {backDropActive &&
+                <View >
+                    <View style={styles.formContainer}>
+                        <View style={styles.formWrapper}>
+                            <FormButton onPress={() => {
+                                setGender("Male")
+                                setBackDropActive(LastState => !LastState)
+                                // onPressHandler()
+                            }} buttonTitle={"Male"} buttonColor={'#3f48cc'} />
+                            <FormButton onPress={() => {
+                                setGender("Female")
+                                setBackDropActive(LastState => !LastState)
+                                // onPressHandler()
+                            }} buttonTitle={"Female"} buttonColor={'#dc819b'} />
+                        </View>
+                    </View>
+
+                </View>
+            }
+
+            {
+                !backDropActive &&
+                <FormButton
+                    buttonTitle="Save"
+                    onPress={onEditPressHandler}
+                />
+            }
         </View>
     )
 }
@@ -91,6 +128,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginTop: 10,
         borderColor: 'rgba(150, 150, 150, 0.7)',
+        // backgroundColor: 'green'
     },
     dropdown: {
         // height: 50,
@@ -111,7 +149,22 @@ const styles = StyleSheet.create({
 
         // textAlign: 'center',
 
-    }
+    },
+    formWrapper: {
+        // backgroundColor: 'green',
+        alignItems: 'center',
+        width: windowWidth / 2,
+    },
+    formContainer: {
+        // backgroundColor: 'rgba(150, 150, 150, 0.7)',
+        alignItems: 'center',
+        // width: windowWidth / 1.7,
+        // height: windowHeight / 3,
+        marginTop: windowHeight / 15,
+        marginBottom: windowHeight / 15,
+        justifyContent: 'center',
+        borderRadius: 20,
+    },
 })
 
 export default AccountForm

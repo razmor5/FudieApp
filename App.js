@@ -15,6 +15,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Loading from './src/screens/Loading';
 import SocialStack from './src/screens/SocialStack';
+import AccountStack from './src/screens/AccountStack';
 
 
 // import firebase, { initializeApp } from 'firebase/app';
@@ -101,7 +102,7 @@ const App = () => {
             ),
           }}
         />
-        <AppTab.Screen name="Account" component={Account}
+        <AppTab.Screen name="Account" component={AccountStack}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="account-cog-outline" color={color} size={23} />
@@ -143,7 +144,8 @@ const styles = StyleSheet.create({
 
   },
   bottom: {
-    backgroundColor: 'rgba(240, 240, 240, 0.7)',
+    backgroundColor: 'rgb(240, 240, 240)',
+    paddingBottom: 10
 
   },
 });
