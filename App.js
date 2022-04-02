@@ -95,13 +95,13 @@ const App = () => {
             ),
           }}
         />
-        <AppTab.Screen name="Social" component={SocialStack}
+        {/* <AppTab.Screen name="Social" component={SocialStack}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="account-switch-outline" color={color} size={23} />
             ),
           }}
-        />
+        /> */}
         <AppTab.Screen name="Account" component={AccountStack}
           options={{
             tabBarIcon: ({ color, size }) => (

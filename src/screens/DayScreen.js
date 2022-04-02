@@ -30,16 +30,53 @@ const DayScreen = (props) => {
     setFetch(!fetch)
   }
 
+  const uncheckOldDayMeals = async () => {
+    await firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).collection(days[date.getDay()]).get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          if (doc.id === "MANAGE") {
+            let todayDate = new Date()
+            let fetchedDate = doc.data().lastChecked.toDate()
+            fetchedDate = [fetchedDate.getDate(), fetchedDate.getMonth(), fetchedDate.getFullYear()]
+            todayDate = [todayDate.getDate(), todayDate.getMonth(), todayDate.getFullYear()]
+            console.log(fetchedDate[0] === todayDate[0] && fetchedDate[1] === todayDate[1] && fetchedDate[2] === todayDate[2])
+            if (fetchedDate[0] !== todayDate[0] || fetchedDate[1] !== todayDate[1] || fetchedDate[2] !== todayDate[2]) {
+              // TODO
+              firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).collection(days[date.getDay()]).get()
+                .then((querySnapshot) => {
+                  querySnapshot.forEach((doc) => {
+                    if (doc.id != "MANAGE") {
+                      firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).collection(days[date.getDay()]).doc(doc.id)
+                        .set({
+                          checked: false
+                        }, { merge: true })
+
+                    }
+                  });
+                });
+            }
+          }
+        });
+      });
+  }
+
+  // const
+
   const fetchMeals = async () => {
+
     let fetchedMeals = []
     await firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).collection(days[date.getDay()]).get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           if (doc.id != "MANAGE") {
+            let checked = doc.data().checked
+            if (date.getDay() !== new Date().getDay()) {
+              checked = false
+            }
             fetchedMeals.push({
               id: doc.id,
               name: doc.data().name,
-              checked: doc.data().checked,
+              checked: checked,
               time: doc.data().time,
               cal: doc.data().cal
             })
@@ -50,7 +87,10 @@ const DayScreen = (props) => {
     // console.log(fetchedMeals)
   }
   useEffect(() => {
+    // console.log(date.getDay())
+    // console.log(new Date().getDay())
     const getMeals = async () => {
+      await uncheckOldDayMeals()
       const mealsFromServer = await fetchMeals()
       setMeals(mealsFromServer.sort(function (a, b) {
         return a.time.localeCompare(b.time);

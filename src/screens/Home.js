@@ -5,6 +5,7 @@ import { windowHeight, windowWidth } from '../../Dimensions';
 import BG from '../../assets/login_bg.jpg'
 import firebase from 'firebase';
 import "firebase/firestore";
+import Notification from '../components/Notification';
 
 
 const Home = (props) => {
@@ -54,6 +55,7 @@ const Home = (props) => {
       style={styles.wrapper}
       blurRadius={15}
     >
+      {/* <Notification /> */}
 
       <ScrollView
         showsVerticalScrollIndicator={false}

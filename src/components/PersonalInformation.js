@@ -31,10 +31,14 @@ const PersonalInformation = (props) => {
         </View>
       }
 
-      {props.personalInfo.gender &&
+      {props.personalInfo.gender ?
         <View style={styles.wrapper}>
 
           <Text style={styles.text}>gender: {props.personalInfo.gender}</Text>
+        </View> :
+        <View >
+
+          <Text style={styles.text}>You can edit your personal information by pressing the 'Edit' button.</Text>
         </View>
       }
     </View>
